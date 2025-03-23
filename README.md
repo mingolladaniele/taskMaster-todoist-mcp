@@ -4,7 +4,6 @@ A Model Context Protocol (MCP) server implementation for Todoist integration, sp
 
 ## Demo Video
 [![TaskMaster Demo](https://img.youtube.com/vi/RM-AaSpTqYI/0.jpg)](https://www.youtube.com/watch?v=RM-AaSpTqYI)
-*Watch the TaskMaster demo on YouTube*
 
 ## Features
 
