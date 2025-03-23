@@ -1,16 +1,19 @@
-# Todoist MCP
+# 🚀 TaskMaster: Todoist MCP for Cursor AI
 
-A Model Context Protocol (MCP) server implementation for Todoist integration. This server allows Claude and other AI assistants to interact with your Todoist tasks via MCP.
+A Model Context Protocol (MCP) server implementation for Todoist integration, specifically developed for Cursor AI. This server allows Cursor AI assistants to interact with your Todoist tasks directly from your coding environment.
+
+## Demo Video
+[![TaskMaster Demo](https://img.youtube.com/vi/RM-AaSpTqYI/0.jpg)](https://www.youtube.com/watch?v=RM-AaSpTqYI)
+*Watch the TaskMaster demo on YouTube*
 
 ## Features
 
-- **Get Today's Tasks**: Fetch and display all tasks due today
-- **Flexible Task Filtering**: Filter tasks using simple predefined filters or Todoist's advanced filter syntax
-  - Filter by due date: today, tomorrow, overdue, or next X days
-  - Filter by priority levels (1-4)
-  - Filter by project ID or label
-  - Apply advanced Todoist filter queries
-- **Rich Task Formatting**: Each task displays priority, due date, and other relevant information
+- **Flexible Task Filtering**: Filter tasks using Todoist's powerful filter syntax
+  - Filter by due date: today, tomorrow, overdue
+  - Filter by priority levels (1-4, where 1 is highest)
+  - Filter using complex query combinations
+- **Rich Task Formatting**: Each task displays priority, due date, and other relevant information with clear icons
+- **Cursor AI Integration**: Seamlessly use Todoist within your Cursor AI coding environment
 
 ## Installation
 
@@ -24,13 +27,13 @@ A Model Context Protocol (MCP) server implementation for Todoist integration. Th
 
 1. Clone this repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/mingolladaniele/todoist-mcp.git
 cd todoist-mcp
 ```
 
-2. Install dependencies with Poetry:
+2. Install dependencies:
 ```bash
-poetry install
+pip install -r requirements.txt
 ```
 
 3. Set your Todoist API token as an environment variable:
@@ -49,71 +52,46 @@ You can find your Todoist API token in Todoist settings → Integrations → Dev
 ### Running the server
 
 ```bash
-poetry run python server.py
+python server.py
 ```
 
-### Testing the client
+### MCP Tool
 
-To test the server functionality:
+The server provides the following MCP tool:
 
-```bash
-poetry run python test_client.py
-```
-
-### MCP Tools
-
-#### `todoist_get_today_tasks`
-
-Retrieves all tasks that are due today.
-
-**Example usage:**
-```python
-tasks = await session.call_tool("todoist_get_today_tasks", arguments={})
-```
-
-#### `todoist_get_tasks`
+#### `get_tasks_tool`
 
 Retrieves tasks with powerful filtering options.
 
 **Parameters:**
-- `filter_param`: Simple predefined filter ("today", "tomorrow", "overdue", "next_n_days:X")
 - `filter_string`: Advanced Todoist filter query string for complex filtering
-- `priority`: Priority level (1-4, where 4 is highest)
-- `project_id`: Project ID to filter by project
-- `label`: Label name to filter tasks
-- `limit`: Maximum number of tasks to return
+- `priority`: Optional priority level (1-4, where 1 is highest priority)
 
-**Example usage:**
-```python
-# Get tasks due tomorrow
-tasks = await session.call_tool("todoist_get_tasks", arguments={"filter_param": "tomorrow"})
+**Example filter strings:**
+- `"today"` - Tasks due today
+- `"overdue"` - Overdue tasks
+- `"Jan 3"` - Tasks due on January 3rd
+- `"due before: May 5"` - Tasks due before May 5th
+- `"due after: May 5"` - Tasks due after May 5th
+- `"due before: +4 hours"` - Tasks due within the next four hours and all overdue tasks
+- `"no date"` - Tasks with no due date
+- `"5 days"` or `"next 5 days"` - Tasks due in the next 5 days
+- `"recurring"` - Tasks with a recurring date
 
-# Get overdue tasks
-tasks = await session.call_tool("todoist_get_tasks", arguments={"filter_param": "overdue"})
+## Setting up with Cursor AI
 
-# Get tasks due in the next 7 days
-tasks = await session.call_tool("todoist_get_tasks", arguments={"filter_param": "next_n_days:7"})
+To use with Cursor AI, create or edit the MCP configuration file:
 
-# Get tasks with no due date
-tasks = await session.call_tool("todoist_get_tasks", arguments={"filter_string": "no date"})
-
-# Get high priority tasks
-tasks = await session.call_tool("todoist_get_tasks", arguments={"priority": 4})
-```
-
-### Using with Claude Desktop
-
-To use with Claude Desktop, add the server config:
-
-- On macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-- On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
+**Windows**: `C:\Users\<username>\.cursor\mcp.json`
 
 ```json
 {
   "mcpServers": {
-    "todoist": {
-      "command": "path/to/python",
-      "args": ["path/to/todoist-mcp/server.py"],
+    "todoist-mcp": {
+      "command": "C:/Users/<username>/path/to/todoist-mcp/.venv/Scripts/python.exe",
+      "args": [
+        "C:/Users/<username>/path/to/todoist-mcp/server.py"
+      ],
       "env": {
         "TODOIST_API_TOKEN": "your-api-token-here"
       }
@@ -122,33 +100,33 @@ To use with Claude Desktop, add the server config:
 }
 ```
 
-## Advanced Filtering
+Replace `<username>` and paths with your actual username and the correct paths to your installation.
 
-The `todoist_get_tasks` tool supports Todoist's powerful filtering syntax through the `filter_string` parameter. Here are some examples:
+**Once you do that, go to Cursor Settings  → MCP and check that the server is correctly running (green dot).**
 
-- `"today"` - Tasks due today
-- `"overdue"` - Overdue tasks
-- `"date: Jan 3"` - Tasks due on January 3rd
-- `"date before: May 5"` - Tasks due before May 5th
-- `"date after: May 5"` - Tasks due after May 5th
-- `"date: 7 days"` - Tasks due in the next 7 days
-- `"no date"` - Tasks with no due date
-- `"date before: next week"` - Tasks due before next week
-- `"date before: sat"` - Tasks dated in the current working week
-
-## Development
+## Project Structure
 
 The codebase is organized into modules:
 
 - `api/`: API wrapper for Todoist
 - `config/`: Configuration and settings
-- `tools/`: MCP tools implementation
-- `utils/`: Utility functions and helpers
+- `utils/`: Utility functions and helpers including task formatting
 
-## Contribution
+## Roadmap
 
-Contributions are welcome! Feel free to submit pull requests or open issues.
+Here are the features planned for future releases:
+
+- **Task Creation**: Add new tasks to your Todoist directly from Cursor AI
+- **Task Completion**: Mark tasks as complete without switching context
+- **Task Deletion**: Remove tasks that are no longer needed
+- **Smart Task Balancing**: AI-powered task rebalancing based on:
+  - Project priority
+  - Time commitments
+  - Due dates
+  - Current workload
+- **Project Management**: Create and manage Todoist projects
+- **Labels and Filters**: Add custom labels and create saved filters
 
 ## License
 
-MIT License 
+MIT License
