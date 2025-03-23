@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "todoist-mcp"
+version = "0.1.0"
+description = ""
+authors = ["mingolladanieleS <danielemingolla98ta@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+mcp = {extras = ["cli"], version = "^1.5.0"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
