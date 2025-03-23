@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class Config:
     """Configuration class for the Todoist MCP"""
@@ -9,4 +12,4 @@ class Config:
         token = os.environ.get("TODOIST_API_TOKEN")
         if not token:
             raise ValueError("TODOIST_API_TOKEN environment variable not set")
-        return token 
+        return token

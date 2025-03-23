@@ -16,31 +16,61 @@ class TaskFormatter:
         
         # Format priority (4 is highest, 1 is lowest in Todoist)
         priority_map = {
-            4: "Urgent",
-            3: "High",
-            2: "Medium",
-            1: "Low"
+            4: "🔴 P1",  # Urgent
+            3: "🟠 P2",  # High
+            2: "🔵 P3",  # Medium
+            1: "⚪ P4"    # Low
         }
-        priority = priority_map.get(task.get("priority", 1), "Low")
+        priority = priority_map.get(task.get("priority"))
         
         # Format due date
-        due_info = ""
+        due_info = "⏱️ No due date"
         if due := task.get("due"):
             due_date = due.get("date", "")
             due_string = due.get("string", "")
-            due_info = f" | Due: {due_string} ({due_date})"
+            
+            # Use due string if available, otherwise use the date
+            if due_string:
+                due_info = f"⏱️ {due_string}"
+            else:
+                due_info = f"⏱️ {due_date}"
+                
+            # Add time if available
+            if due.get("datetime"):
+                time_part = due.get("datetime", "").split("T")[1][:5]  # Get HH:MM part
+                due_info += f" at {time_part}"
+                
+            # Mark recurring tasks
+            if due.get("is_recurring"):
+                due_info += " (recurring)"
         
         # Format project
-        project_info = f" | Project ID: {task.get('project_id', 'N/A')}"
+        project_info = f"📁 Project: {task.get('project_id', 'N/A')}"
         
         # Format labels
         labels = task.get("labels", [])
         labels_info = ""
         if labels:
-            labels_info = f" | Labels: {', '.join(labels)}"
+            labels_info = f"🏷️ {', '.join(labels)}"
         
         # Format task with all available information
-        formatted_task = f"[{priority}] {content}{due_info}{project_info}{labels_info} (ID: {task_id})"
+        formatted_task = f"{priority} | {content} | {due_info}"
+        
+        # Add additional info on a new line if available
+        additional_info = []
+        if labels_info:
+            additional_info.append(labels_info)
+        if task.get("description"):
+            description = task.get("description", "")
+            if len(description) > 50:
+                description = description[:47] + "..."
+            additional_info.append(f"📝 {description}")
+            
+        if additional_info:
+            formatted_task += f"\n    {' | '.join(additional_info)}"
+        
+        # Add task ID at the end for reference
+        formatted_task += f" (ID: {task_id})"
         
         return formatted_task
     

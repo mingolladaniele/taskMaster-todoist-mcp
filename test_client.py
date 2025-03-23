@@ -24,13 +24,29 @@ async def run_client():
             await session.initialize()
             
             # List available tools
-            tools = await session.list_tools()
-            print(f"Available tools: {tools.tools}")
+            tools_obj = await session.list_tools()
+            print(f"Available tools: {tools_obj.tools}")
             
-            # Get today's tasks
-            print("Fetching today's tasks...")
-            tasks = await session.call_tool("todoist_get_today_tasks", arguments={})
-            print(f"Today's tasks:\n{tasks}")
+            # Test various filter options
+            print("\nFetching tasks due tomorrow...")
+            tomorrow_tasks = await session.call_tool("todoist_get_tasks", arguments={"filter_param": "tomorrow"})
+            print(f"Tomorrow's tasks:\n{tomorrow_tasks}")
+            
+            print("\nFetching overdue tasks...")
+            overdue_tasks = await session.call_tool("todoist_get_tasks", arguments={"filter_param": "overdue"})
+            print(f"Overdue tasks:\n{overdue_tasks}")
+            
+            print("\nFetching tasks due in the next 7 days...")
+            next7_tasks = await session.call_tool("todoist_get_tasks", arguments={"filter_param": "next_n_days:7"})
+            print(f"Next 7 days tasks:\n{next7_tasks}")
+            
+            print("\nFetching tasks with advanced filter (no date)...")
+            no_date_tasks = await session.call_tool("todoist_get_tasks", arguments={"filter_string": "no date"})
+            print(f"Tasks with no date:\n{no_date_tasks}")
+            
+            print("\nFetching high priority tasks...")
+            high_priority_tasks = await session.call_tool("todoist_get_tasks", arguments={"priority": 1})
+            print(f"High priority tasks:\n{high_priority_tasks}")
             
             print("MCP client test completed successfully!")
 
