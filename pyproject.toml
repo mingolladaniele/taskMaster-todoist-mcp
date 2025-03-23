@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 mcp = {extras = ["cli"], version = "^1.5.0"}
+requests = "^2.31.0"
 
 
 [build-system]

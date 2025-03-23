@@ -25,16 +25,12 @@ async def run_client():
             
             # List available tools
             tools = await session.list_tools()
-            print(f"Available tools: {tools}")
+            print(f"Available tools: {tools.tools}")
             
-            # Call the add tool
-            result = await session.call_tool("add", arguments={"a": 5, "b": 7})
-            print(f"5 + 7 = {result}")
-            
-            # Get a greeting
-            name = "Daniele"
-            content, mime_type = await session.read_resource(f"greeting://{name}")
-            print(f"Greeting: {content} (mime type: {mime_type})")
+            # Get today's tasks
+            print("Fetching today's tasks...")
+            tasks = await session.call_tool("todoist_get_today_tasks", arguments={})
+            print(f"Today's tasks:\n{tasks}")
             
             print("MCP client test completed successfully!")
 
