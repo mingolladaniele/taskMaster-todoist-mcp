@@ -15,11 +15,11 @@ class TodoistAPI:
             "Content-Type": "application/json"
         }
     
-    def get_tasks(self, filter_string: str, priority: int = None) -> list:
+    def get_tasks(self, filter: str, priority: int = None) -> list:
         """Get tasks with flexible filtering options using Todoist's native filtering
         
         Args:
-            filter_string: Todoist filter query string (e.g., "today", "overdue", 
+            filter: Todoist filter query string (e.g., "today", "overdue", 
                            "p1", "p1 & today", etc.)
             
         Returns:
@@ -29,8 +29,8 @@ class TodoistAPI:
         
         # Add API parameters for supported filters
         params = {}
-        if filter_string:
-            params["filter"] = filter_string
+        if filter:
+            params["filter"] = filter
         
         # Make the API request with filters
         response = requests.get(url, headers=self.headers, params=params)
@@ -75,3 +75,22 @@ class TodoistAPI:
             raise Exception(f"Failed to create task: {response.status_code} - {response.text}")
         
         return response.json()
+        
+    def close_task(self, task_id: str) -> dict:
+        """Closes (completes) a single task in Todoist by its ID
+        
+        Args:
+            task_id s: The ID of the task to close
+            
+        Returns:
+            dict: The API response confirming completion
+        """
+        url = f"{self.BASE_TASK_URL}/{task_id}/close"
+        
+        # Make the API request to close the task
+        response = requests.post(url, headers=self.headers)
+        
+        if response.status_code != 204:
+            raise Exception(f"Failed to close task: {response.status_code} - {response.text}")
+        
+        return {"success": True, "task_id": task_id}

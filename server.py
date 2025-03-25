@@ -22,7 +22,7 @@ api = TodoistAPI()
 
 @mcp.tool()
 def get_tasks_tool(
-    filter_string: str,
+    filter: str,
     priority: int = None,
 ) -> list:
     """
@@ -32,10 +32,10 @@ def get_tasks_tool(
     simple predefined filters or Todoist's advanced filter syntax.
     
     Args:
-        filter_string: English advanced Todoist filter query string for complex filtering
+        filter: English advanced Todoist filter query string for complex filtering
         priority: Priority level (1-4, where 1 is highest priority)
     
-    Examples of filter_string:
+    Examples of filter:
         "Jan 3" - Tasks due on January 3rd
         "due before: May 5" - Tasks due before May 5th
         "due after: May 5" - Tasks due after May 5th
@@ -54,12 +54,18 @@ def get_tasks_tool(
         "recurring" - Tasks with a recurring date
         "!recurring" - Tasks that don't have a recurring date
         "no time & !recurring" - Tasks with a date but no time, which aren't recurring
+        
+        Keyword-based filters:
+        "search: Meeting" - Tasks containing the word "Meeting"
+        "search: Meeting & today" - Tasks containing "Meeting" due today
+        "search: Meeting | search: Work" - Tasks containing either "Meeting" or "Work"
+        "search: http" - Tasks containing web links
     
     Returns:
         list: List of tasks matching the criteria
     """
     return api.get_tasks(
-        filter_string=filter_string,
+        filter=filter,
         priority=priority,
     )
 
@@ -86,6 +92,21 @@ def create_task_tool(content: str, description: str = None, due_string: str = No
         priority=priority
     )
 
+@mcp.tool()
+def close_task_tool(task_id) -> dict:
+    """
+    Close a task in Todoist
+    
+    This tool marks a task as completed in Todoist using its ID.
+
+    Args:
+        task_id: The ID of the task to close
+    
+    Returns:
+        dict: Result of the close operation
+    """
+    task_id = str(task_id)
+    return api.close_task(task_id)
 
 # Start the server when this script is run directly
 if __name__ == "__main__":
