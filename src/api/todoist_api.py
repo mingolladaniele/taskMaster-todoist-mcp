@@ -6,6 +6,7 @@ class TodoistAPI:
     """Wrapper for the Todoist REST API"""
     
     BASE_URL = "https://api.todoist.com/rest/v2"
+    BASE_TASK_URL = f"{BASE_URL}/tasks"
     
     def __init__(self):
         self.token = Config.get_api_token()
@@ -24,7 +25,7 @@ class TodoistAPI:
         Returns:
             List of filtered task objects
         """
-        url = f"{self.BASE_URL}/tasks"
+        url = self.BASE_TASK_URL
         
         # Add API parameters for supported filters
         params = {}
@@ -46,3 +47,31 @@ class TodoistAPI:
         formatted_tasks = TaskFormatter.format_task_list(tasks)
                 
         return formatted_tasks
+        
+    def create_task(self, content: str, description: str = None, due_string: str = None, priority: int = 1) -> dict:
+        """Creates a new task in Todoist
+        
+        Args:
+            content: Task content. This value may contain markdown-formatted text and hyperlinks.
+            description: A description for the task. This value may contain markdown-formatted text and hyperlinks.
+            due_string: Human defined task due date (ex.: "next Monday", "Tomorrow"). Value is set using local (not UTC) time.
+            priority: Task priority from 1 (normal) to 4 (urgent).
+            
+        Returns:
+            The created task object
+        """
+        url = self.BASE_TASK_URL
+        
+        task_data = {
+            "content": content,
+            "description": description,
+            "due_string": due_string,
+            "priority": priority
+        }
+        
+        response = requests.post(url, headers=self.headers, json=task_data)
+        
+        if response.status_code != 200:
+            raise Exception(f"Failed to create task: {response.status_code} - {response.text}")
+        
+        return response.json()

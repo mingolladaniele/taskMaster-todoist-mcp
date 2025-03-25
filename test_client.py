@@ -68,11 +68,6 @@ async def run_client():
             print(f"Next 7 days tasks:\n{next7_tasks}")
 
             # Priority filters
-            print("\nFetching high priority (P1) tasks...")
-            high_priority_tasks = await session.call_tool(
-                "get_tasks_tool", arguments={"priority": 1}
-            )
-            print(f"High priority tasks:\n{high_priority_tasks}")
 
             print("\nFetching high priority (P1) tasks due this week...")
             p1_this_week = await session.call_tool(

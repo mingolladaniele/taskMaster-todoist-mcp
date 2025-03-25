@@ -32,7 +32,7 @@ def get_tasks_tool(
     simple predefined filters or Todoist's advanced filter syntax.
     
     Args:
-        filter_string: Advanced Todoist filter query string for complex filtering
+        filter_string: English advanced Todoist filter query string for complex filtering
         priority: Priority level (1-4, where 1 is highest priority)
     
     Examples of filter_string:
@@ -61,6 +61,29 @@ def get_tasks_tool(
     return api.get_tasks(
         filter_string=filter_string,
         priority=priority,
+    )
+
+@mcp.tool()
+def create_task_tool(content: str, description: str = None, due_string: str = None, priority: int = 3) -> dict:
+    """
+    Create a new task in Todoist
+    
+    This tool creates a new task in Todoist with the given content and priority.
+
+    Args:
+        content: Task content. This value may contain markdown-formatted text and hyperlinks.
+        description: A description for the task. This value may contain markdown-formatted text and hyperlinks.
+        due_string: English human defined task due date (ex.: "next Monday", "Tomorrow"). Value is set using local (not UTC) time.
+        priority: Task priority from 1 (normal) to 4 (urgent).
+    
+    Returns:
+        dict: Return the response from the API call in JSON format.
+    """
+    return api.create_task(
+        content=content,
+        description=description,
+        due_string=due_string,
+        priority=priority
     )
 
 
