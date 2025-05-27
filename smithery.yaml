@@ -1,0 +1,28 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
+startCommand:
+  type: stdio
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({ command: 'python', args: ['server.py'], env: { TODOIST_API_TOKEN: config.todoistApiToken } })
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - todoistApiToken
+    properties:
+      todoistApiToken:
+        type: string
+        description: Your Todoist API token
+      envFile:
+        type: string
+        description: Path to a .env file (optional)
+      pythonPath:
+        type: string
+        default: python
+        description: Path to python interpreter
+  exampleConfig:
+    todoistApiToken: your_todoist_api_token_here
+    envFile: .env
+    pythonPath: python
