@@ -1,5 +1,7 @@
 # 🚀 TaskMaster: Todoist MCP for Cursor AI
 
+[![smithery badge](https://smithery.ai/badge/@mingolladaniele/taskMaster-todoist-mcp)](https://smithery.ai/server/@mingolladaniele/taskMaster-todoist-mcp)
+
 A Model Context Protocol (MCP) server implementation for Todoist integration, specifically developed for Cursor AI. This server allows Cursor AI assistants to interact with your Todoist tasks directly from your coding environment.
 
 ## Demo Video
@@ -15,6 +17,14 @@ A Model Context Protocol (MCP) server implementation for Todoist integration, sp
 - **Cursor AI Integration**: Seamlessly use Todoist within your Cursor AI coding environment
 
 ## Installation
+
+### Installing via Smithery
+
+To install TaskMaster for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@mingolladaniele/taskMaster-todoist-mcp):
+
+```bash
+npx -y @smithery/cli install @mingolladaniele/taskMaster-todoist-mcp --client claude
+```
 
 ### Prerequisites
 
