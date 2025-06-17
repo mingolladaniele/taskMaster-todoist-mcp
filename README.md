@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/mingolladaniele-taskmaster-todoist-mcp-badge.png)](https://mseep.ai/app/mingolladaniele-taskmaster-todoist-mcp)
+
 # 🚀 TaskMaster: Todoist MCP for Cursor AI
 
 [![smithery badge](https://smithery.ai/badge/@mingolladaniele/taskMaster-todoist-mcp)](https://smithery.ai/server/@mingolladaniele/taskMaster-todoist-mcp)
